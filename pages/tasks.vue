@@ -13,26 +13,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
-//export default {
-//  computed: mapGetters({
-//    todos: 'todos/todos'
-//  }),
-//  methods: {
-//    addTodo(e) {
-//      var text = e.target.value
-//      if (text.trim()) {
-//        this.$store.commit('todos/add', { text })
-//      }
-//      e.target.value = ''
-//    },
-//    ...mapMutations({
-//      toggle: 'todos/toggle'
-//    })
-//  }
-//}
 export default {
+  mounted() {
+    this.$store.dispatch("tasks/init")
+  },
+
   computed: mapGetters({
     tasks: "tasks/tasks"
   })
