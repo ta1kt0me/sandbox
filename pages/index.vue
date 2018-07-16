@@ -3,6 +3,7 @@
     <h1>
       Hello {{ name }}
     </h1>
+    <nuxt-link to="/tasks">Tasks</nuxt-link>
   </div>
 </template>
 
