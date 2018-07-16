@@ -10,6 +10,7 @@
     "nuxt-edge": "^2.0.0-25523369.7c85202"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "firebase": "^5.2.0",
     "vuexfire": "^2.3.0"
   }
