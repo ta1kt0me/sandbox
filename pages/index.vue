@@ -1,16 +1,21 @@
 <template>
   <div>
     <h1>
-      Hello {{ name }}
+      Index {{ name }}
     </h1>
     <nuxt-link to="/tasks">Tasks</nuxt-link>
+    <br />
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  data: () => {
-    return { name: "world" }
-  }
+  computed: {
+    ...mapState({
+      name: (state) => state.user.currentUser,
+    }),
+  },
 }
 </script>
