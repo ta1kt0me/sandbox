@@ -5,6 +5,7 @@
     </h1>
     <ul>
       <li v-for="(task, index) in tasks" :key="index">
+        <input :value="task.name" @keyup.enter="(e) => updateTask(e, task['.key'])" />
         {{ task.name }}
         <button @click="removeTask(task['.key'])">X</button>
       </li>
@@ -33,6 +34,16 @@ export default {
         this.$store.dispatch('add', { name })
       }
       event.target.value = ''
+    },
+
+    updateTask(event, key) {
+      const name = event.target.value
+
+      if (name.trim()) {
+        this.$store.dispatch("update", { key, name })
+      } else {
+        this.$store.dispatch("remove", key);
+      }
     },
 
     removeTask(key) {
