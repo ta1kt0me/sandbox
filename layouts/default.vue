@@ -15,17 +15,17 @@ import { mapState, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapState({
-      name: (state) => state.user.currentUser,
+      name: state => state.users.currentUser,
     }),
 
     ...mapGetters({
-      isSignedIn: "user/isSignedIn"
+      isSignedIn: "isSignedIn"
     }),
   },
 
   methods: {
     createSession(loginId) {
-      this.$store.dispatch("user/createSession", loginId);
+      this.$store.dispatch("createSession", loginId);
       console.log("signed in");
     },
 
@@ -36,7 +36,7 @@ export default {
 
     async signout() {
       try {
-        this.$store.dispatch("user/destroySession");
+        this.$store.dispatch("destroySession");
         await firebase.auth().signOut();
         console.log("signed out")
       } catch(error) {
@@ -47,7 +47,7 @@ export default {
   },
 
   created () {
-    const getUserName = async (uid) => {
+    const getUserName = async uid => {
       try {
         const response = await axios.get(`https://api.github.com/user/${uid}`)
         return this.createSession(response.data.login);
@@ -57,14 +57,14 @@ export default {
       }
     };
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user && user.providerData) {
         const uid = user.providerData[0].uid;
         getUserName(uid);
       } else {
-        console.log("sign fail")
+        console.log("sign failed")
       }
     });
-  }
+  },
 }
 </script>

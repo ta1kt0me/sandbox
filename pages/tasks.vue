@@ -8,20 +8,35 @@
         {{ task.name }}
       </li>
     </ul>
+    <div>
+      <input @keyup.enter="addTask" />
+    </div>
     <nuxt-link to="/">Top</nuxt-link>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
-  mounted() {
-    this.$store.dispatch("tasks/init")
+  computed: {
+    ...mapGetters({
+      tasks: "tasks"
+    }),
   },
 
-  computed: mapGetters({
-    tasks: "tasks/tasks"
-  })
+  methods: {
+    addTask(event) {
+      const name = event.target.value
+      if (name.trim()) {
+        this.$store.dispatch('add', { name })
+      }
+      event.target.value = ''
+    },
+  },
+
+  mounted() {
+    this.$store.dispatch("init")
+  },
 }
 </script>
