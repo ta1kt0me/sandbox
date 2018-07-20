@@ -4,9 +4,8 @@
       Todos
     </h1>
     <ul>
-      <li v-for="(task, index) in tasks" :key="index">
-        <input :value="task.name" @keyup.enter="(e) => updateTask(e, task['.key'])" />
-        {{ task.name }}
+      <li v-for="(task) in tasks" :key="task['.key']">
+        <input :value="task.name" @keypress.enter="(e) => updateTask(e, task['.key'])" />
         <button @click="removeTask(task['.key'])">X</button>
       </li>
     </ul>
@@ -44,6 +43,8 @@ export default {
       } else {
         this.$store.dispatch("remove", key);
       }
+
+      event.target.blur()
     },
 
     removeTask(key) {
