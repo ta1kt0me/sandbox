@@ -20,4 +20,8 @@ export const actions = {
   add: firebaseAction((context, name) => {
     tasksRef.push(name);
   }),
+
+  remove: firebaseAction((context, key) => {
+    tasksRef.child(key).remove();
+  }),
 }

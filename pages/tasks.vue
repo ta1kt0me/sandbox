@@ -6,6 +6,7 @@
     <ul>
       <li v-for="(task, index) in tasks" :key="index">
         {{ task.name }}
+        <button @click="removeTask(task['.key'])">X</button>
       </li>
     </ul>
     <div>
@@ -33,6 +34,10 @@ export default {
       }
       event.target.value = ''
     },
+
+    removeTask(key) {
+      this.$store.dispatch("remove", key);
+    }
   },
 
   mounted() {
