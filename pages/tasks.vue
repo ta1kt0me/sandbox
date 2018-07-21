@@ -21,17 +21,17 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters({
-      tasks: "tasks/tasks",
+    ...mapGetters("tasks", {
+      tasks: "tasks",
     }),
   },
 
   methods: {
-    ...mapActions({
-      init: "tasks/init",
-      create: "tasks/add",
-      update: "tasks/update",
-      destroy: "tasks/remove",
+    ...mapActions("tasks", {
+      init: "init",
+      create: "add",
+      update: "update",
+      destroy: "remove",
     }),
 
     addTask(event) {
