@@ -17,17 +17,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+
+const tasksHelpers = createNamespacedHelpers('tasks')
+const mapTasksGetters = tasksHelpers.mapGetters
+const mapTasksActions = tasksHelpers.mapActions
 
 export default {
   computed: {
-    ...mapGetters("tasks", {
+    ...mapTasksGetters({
       tasks: "tasks",
     }),
   },
 
   methods: {
-    ...mapActions("tasks", {
+    ...mapTasksActions({
       init: "init",
       create: "add",
       update: "update",

@@ -10,7 +10,12 @@
 <script>
 import firebase from "~/plugins/firebase";
 import axios from "axios";
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState } from "vuex";
+import { createNamespacedHelpers } from 'vuex'
+
+const usersHelpers = createNamespacedHelpers('users')
+const mapUsersGetters = usersHelpers.mapGetters
+const mapUsersActions = usersHelpers.mapActions
 
 export default {
   computed: {
@@ -18,15 +23,15 @@ export default {
       name: state => state.users.currentUser,
     }),
 
-    ...mapGetters({
-      isSignedIn: "users/isSignedIn",
+    ...mapUsersGetters({
+      isSignedIn: "isSignedIn",
     }),
   },
 
   methods: {
-    ...mapActions({
-      createSession: "users/createSession",
-      destroySession: "users/destroySession",
+    ...mapUsersActions({
+      createSession: "createSession",
+      destroySession: "destroySession",
     }),
 
     signin() {
