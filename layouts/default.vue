@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import firebase from "~/plugins/firebase";
-import axios from "axios";
 import { mapState } from "vuex";
 import { createNamespacedHelpers } from 'vuex'
 
@@ -31,46 +29,14 @@ export default {
   methods: {
     ...mapUsersActions({
       createSession: "createSession",
-      destroySession: "destroySession",
+      getSignInUser: "getSignInUser",
+      signin: "signin",
+      signout: "signout",
     }),
-
-    signin() {
-      const provider = new firebase.auth.GithubAuthProvider();
-      firebase.auth().signInWithPopup(provider);
-    },
-
-    async signout() {
-      try {
-        this.destroySession();
-        await firebase.auth().signOut();
-        console.log("signed out");
-      } catch(error) {
-        console.log(error);
-        console.log("couldn't sign out");
-      }
-    },
   },
 
   created () {
-    const getUserName = async uid => {
-      try {
-        const response = await axios.get(`https://api.github.com/user/${uid}`)
-        this.createSession(response.data.login);
-        console.log("signed in");
-      } catch(error) {
-        console.log(error);
-        console.log("couldn't get login id from GitHub");
-      }
-    };
-
-    firebase.auth().onAuthStateChanged(user => {
-      if (user && user.providerData) {
-        const uid = user.providerData[0].uid;
-        getUserName(uid);
-      } else {
-        console.log("sign failed");
-      }
-    });
+    this.getSignInUser();
   },
 }
 </script>
