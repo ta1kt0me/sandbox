@@ -10,7 +10,7 @@
 <script>
 import firebase from "~/plugins/firebase";
 import axios from "axios";
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
@@ -19,15 +19,15 @@ export default {
     }),
 
     ...mapGetters({
-      isSignedIn: "isSignedIn"
+      isSignedIn: "users/isSignedIn",
     }),
   },
 
   methods: {
-    createSession(loginId) {
-      this.$store.dispatch("createSession", loginId);
-      console.log("signed in");
-    },
+    ...mapActions({
+      createSession: "users/createSession",
+      destroySession: "users/destroySession",
+    }),
 
     signin() {
       const provider = new firebase.auth.GithubAuthProvider();
@@ -36,9 +36,9 @@ export default {
 
     async signout() {
       try {
-        this.$store.dispatch("destroySession");
+        this.destroySession();
         await firebase.auth().signOut();
-        console.log("signed out")
+        console.log("signed out");
       } catch(error) {
         console.log(error);
         console.log("couldn't sign out");
@@ -50,7 +50,8 @@ export default {
     const getUserName = async uid => {
       try {
         const response = await axios.get(`https://api.github.com/user/${uid}`)
-        return this.createSession(response.data.login);
+        this.createSession(response.data.login);
+        console.log("signed in");
       } catch(error) {
         console.log(error);
         console.log("couldn't get login id from GitHub");
@@ -62,7 +63,7 @@ export default {
         const uid = user.providerData[0].uid;
         getUserName(uid);
       } else {
-        console.log("sign failed")
+        console.log("sign failed");
       }
     });
   },

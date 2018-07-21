@@ -4,6 +4,8 @@ import { firebaseAction } from "vuexfire";
 const db = firebase.database();
 const tasksRef = db.ref("tasks");
 
+export const namespaced = true;
+
 export const state = () => ({
   tasks: []
 });

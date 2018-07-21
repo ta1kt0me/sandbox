@@ -17,43 +17,50 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
     ...mapGetters({
-      tasks: "tasks"
+      tasks: "tasks/tasks",
     }),
   },
 
   methods: {
+    ...mapActions({
+      init: "tasks/init",
+      create: "tasks/add",
+      update: "tasks/update",
+      destroy: "tasks/remove",
+    }),
+
     addTask(event) {
       const name = event.target.value
       if (name.trim()) {
-        this.$store.dispatch('add', { name })
+        this.create({name});
       }
       event.target.value = ''
     },
 
     updateTask(event, key) {
-      const name = event.target.value
+      const name = event.target.value;
 
       if (name.trim()) {
-        this.$store.dispatch("update", { key, name })
+        this.update({key, name});
       } else {
-        this.$store.dispatch("remove", key);
+        this.destroy(key);
       }
 
-      event.target.blur()
+      event.target.blur();
     },
 
     removeTask(key) {
-      this.$store.dispatch("remove", key);
+      this.destroy(key);
     }
   },
 
   mounted() {
-    this.$store.dispatch("init")
+    this.init();
   },
 }
 </script>
