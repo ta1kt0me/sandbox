@@ -15,6 +15,9 @@ const usersHelpers = createNamespacedHelpers('users')
 const mapUsersGetters = usersHelpers.mapGetters
 const mapUsersActions = usersHelpers.mapActions
 
+const tasksHelpers = createNamespacedHelpers('tasks')
+const mapTasksActions = tasksHelpers.mapActions
+
 export default {
   computed: {
     ...mapState({
@@ -33,10 +36,15 @@ export default {
       signin: "signin",
       signout: "signout",
     }),
+
+    ...mapTasksActions({
+      tasksInit: "init",
+    })
   },
 
-  created () {
-    this.getSignInUser();
+  async created () {
+    await this.getSignInUser();
+    this.tasksInit();
   },
 }
 </script>

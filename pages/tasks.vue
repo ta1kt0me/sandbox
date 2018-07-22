@@ -32,7 +32,6 @@ export default {
 
   methods: {
     ...mapTasksActions({
-      init: "init",
       create: "add",
       update: "update",
       destroy: "remove",
@@ -61,10 +60,6 @@ export default {
     removeTask(key) {
       this.destroy(key);
     }
-  },
-
-  mounted() {
-    this.init();
   },
 }
 </script>

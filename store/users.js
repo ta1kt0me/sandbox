@@ -4,18 +4,26 @@ import firebase from "~/plugins/firebase";
 export const namespaced = true;
 
 export const state = () => ({
-  currentUser: null
+  currentUser: null,
+  uid: null,
 })
 
 export const mutations = {
-  setSession(state, loginId) {
-    state.currentUser = loginId
+  setSession(state, { loginId, uid }) {
+    state.currentUser = loginId;
+    state.uid = uid;
   }
 }
 
 export const getters = {
   isSignedIn (state) {
-    return !!state.currentUser
+    return !!state.uid
+  },
+  currentUser () {
+    return state.currentUser;
+  },
+  uid () {
+    return state.uid;
   },
 }
 
@@ -27,7 +35,7 @@ export const actions = {
 
   async signout({ commit }) {
     try {
-      commit("setSession", null);
+      commit("setSession", { uid: null, loginId: null });
       await firebase.auth().signOut();
       console.log("signed out");
     } catch(error) {
@@ -36,21 +44,31 @@ export const actions = {
     }
   },
 
-  getSignInUser({ dispatch }) {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user && user.providerData) {
-        const uid = user.providerData[0].uid;
-        dispatch("createSession", uid);
-      } else {
-        console.log("sign failed");
-      }
-    });
+  async getSignInUser({ dispatch }) {
+    const fetchUser = () => {
+      return new Promise((resolve, reject) => {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user && user.providerData) {
+            resolve(user);
+          } else {
+            console.log("sign failed");
+            reject();
+          }
+        });
+      });
+    }
+
+    const user = await fetchUser();
+    if (user !== null) {
+      const uid = user.providerData[0].uid;
+      dispatch("createSession", uid);
+    }
   },
 
   async createSession({ commit }, uid) {
     try {
       const response = await axios.get(`https://api.github.com/user/${uid}`)
-      commit("setSession", response.data.login);
+      commit("setSession", { uid, loginId: response.data.login });
       console.log("signed in");
     } catch(error) {
       console.log(error);
