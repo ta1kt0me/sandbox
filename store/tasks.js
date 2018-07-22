@@ -2,7 +2,8 @@ import firebase from "~/plugins/firebase";
 import { firebaseAction } from "vuexfire";
 
 const db = firebase.database();
-const tasksRef = db.ref("tasks");
+const tasksRef = db.ref("tasks")
+const taskRef = uid => tasksRef.child(uid)
 
 export const namespaced = true;
 
@@ -16,22 +17,22 @@ export const getters = {
 
 export const actions = {
   init: firebaseAction(({ bindFirebaseRef, rootState }) => {
-    const uid = firebase.auth().currentUser.providerData.find(profile => profile.providerId === "github.com").uid
-    bindFirebaseRef(`tasks`, tasksRef.child(uid));
+    const uid = firebase.auth().currentUser.uid
+    bindFirebaseRef(`tasks`, taskRef(uid));
   }),
 
   add: firebaseAction(({ getters, rootState }, name) => {
     const uid = rootState.users.uid;
-    tasksRef.child(uid).push(name);
+    taskRef(uid).push(name);
   }),
 
   update: firebaseAction(({ rootState }, { key, name }) => {
     const uid = rootState.users.uid;
-    tasksRef.child(uid).update({ [key]: { name } });
+    taskRef(uid).update({ [key]: { name } });
   }),
 
   remove: firebaseAction(({ rootState }, key) => {
     const uid = rootState.users.uid;
-    tasksRef.child(uid).child(key).remove();
+    taskRef(uid).child(key).remove();
   }),
 }

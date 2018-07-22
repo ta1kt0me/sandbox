@@ -60,15 +60,15 @@ export const actions = {
 
     const user = await fetchUser();
     if (user !== null) {
-      const uid = user.providerData[0].uid;
-      dispatch("createSession", uid);
+      dispatch("createSession", user);
     }
   },
 
-  async createSession({ commit }, uid) {
+  async createSession({ commit }, user) {
     try {
+      const uid = user.providerData[0].uid;
       const response = await axios.get(`https://api.github.com/user/${uid}`)
-      commit("setSession", { uid, loginId: response.data.login });
+      commit("setSession", { uid: user.uid, loginId: response.data.login });
       console.log("signed in");
     } catch(error) {
       console.log(error);
