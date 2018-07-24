@@ -58,9 +58,13 @@ export const actions = {
       });
     }
 
-    const user = await fetchUser();
-    if (user !== null) {
-      dispatch("createSession", user);
+    try {
+      const user = await fetchUser();
+      if (user !== null) {
+        return await dispatch("createSession", user);
+      }
+    } catch(error) {
+      console.log("fail to sign in.");
     }
   },
 
@@ -68,8 +72,10 @@ export const actions = {
     try {
       const uid = user.providerData[0].uid;
       const response = await axios.get(`https://api.github.com/user/${uid}`)
-      commit("setSession", { uid: user.uid, loginId: response.data.login });
+      const loginId = response.data.login;
+      commit("setSession", { uid: user.uid, loginId });
       console.log("signed in");
+      return loginId
     } catch(error) {
       console.log(error);
       console.log("couldn't get login id from GitHub");

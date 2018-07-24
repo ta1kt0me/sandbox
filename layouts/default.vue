@@ -6,20 +6,20 @@
       app
     >
       <v-list dense>
-        <v-list-tile @click="">
+        <v-list-tile @click="signout" v-if="isSignedIn">
           <v-list-tile-action>
-            <v-icon>home</v-icon>
+            <v-icon>fas fa-sign-out-alt</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Home</v-list-tile-title>
+            <v-list-tile-title>Sign Out</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="">
+        <v-list-tile @click="signin" v-else>
           <v-list-tile-action>
-            <v-icon>contact_mail</v-icon>
+            <v-icon>fab fa-github-alt</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Contact</v-list-tile-title>
+            <v-list-tile-title>Sign In with GitHub</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -100,8 +100,10 @@ export default {
   },
 
   async created () {
-    await this.getSignInUser();
-    this.tasksInit();
+    const name = await this.getSignInUser();
+    if (name) {
+      this.tasksInit();
+    }
   },
 }
 </script>
