@@ -1,0 +1,6 @@
+path /tasks/{uid} {
+  read() { currentUser() == uid }
+  write() { currentUser() == uid }
+}
+
+currentUser() { auth.uid }

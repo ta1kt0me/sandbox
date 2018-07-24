@@ -4,9 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nuxt"
+    "start": "nuxt",
+    "bolt": "firebase-bolt sandbox.bolt --output rule.json"
   },
   "devDependencies": {
+    "firebase-bolt": "^0.8.3",
     "nuxt-edge": "^2.0.0-25523369.7c85202"
   },
   "dependencies": {
