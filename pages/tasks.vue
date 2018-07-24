@@ -3,15 +3,22 @@
     <h1>
       Todos
     </h1>
-    <ul>
-      <li v-for="(task) in tasks" :key="task['.key']">
-        <input :value="task.name" @keypress.enter="(e) => updateTask(e, task['.key'])" />
-        <button @click="removeTask(task['.key'])">X</button>
-      </li>
-    </ul>
-    <div>
-      <input @keyup.enter="addTask" />
-    </div>
+    <v-flex xs12>
+      <v-text-field
+        v-model="task"
+        label="Task name"
+        @keyup.enter="addTask"
+      />
+
+      <v-text-field
+        v-for="task in tasks"
+        :key="task['.key']"
+        :value="task.name"
+        @keypress.enter="(e) => updateTask(e, task['.key'])"
+        append-outer-icon="close"
+        @click:append-outer="removeTask(task['.key'])"
+      />
+    </v-flex>
     <nuxt-link to="/">Top</nuxt-link>
   </div>
 </template>
@@ -24,6 +31,10 @@ const mapTasksGetters = tasksHelpers.mapGetters
 const mapTasksActions = tasksHelpers.mapActions
 
 export default {
+  data: () => ({
+    task: ""
+  }),
+
   computed: {
     ...mapTasksGetters({
       tasks: "tasks",
@@ -38,11 +49,11 @@ export default {
     }),
 
     addTask(event) {
-      const name = event.target.value
+      const name = this.task;
       if (name.trim()) {
         this.create({name});
+        this.task = ''
       }
-      event.target.value = ''
     },
 
     updateTask(event, key) {
@@ -59,7 +70,7 @@ export default {
 
     removeTask(key) {
       this.destroy(key);
-    }
+    },
   },
 }
 </script>

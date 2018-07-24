@@ -12,4 +12,9 @@ module.exports = {
   plugins: [
     '~/plugins/firebase'
   ],
+  modules: [
+    '@nuxtjs/vuetify'
+  ],
+  vuetify: {
+  }
 }
