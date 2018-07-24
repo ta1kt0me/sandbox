@@ -28,9 +28,9 @@ export const getters = {
 }
 
 export const actions = {
-  signin() {
+  async signin() {
     const provider = new firebase.auth.GithubAuthProvider();
-    firebase.auth().signInWithPopup(provider);
+    await firebase.auth().signInWithPopup(provider);
   },
 
   async signout({ commit }) {

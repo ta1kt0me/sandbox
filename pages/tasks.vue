@@ -6,7 +6,7 @@
     <v-flex xs12>
       <v-text-field
         v-model="task"
-        label="Task name"
+        label="New Task"
         @keyup.enter="addTask"
       />
 

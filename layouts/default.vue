@@ -40,11 +40,7 @@
           align-center
         >
           <v-flex text-xs-center>
-            <div>
-              <nuxt />
-              <li v-if="isSignedIn"><a href="#" @click="signout">Sign out</a></li>
-              <li v-else><a href="#" @click="signin">Signin with GitHub</a></li>
-            </div>
+            <nuxt />
           </v-flex>
         </v-layout>
       </v-container>
@@ -90,13 +86,24 @@ export default {
     ...mapUsersActions({
       createSession: "createSession",
       getSignInUser: "getSignInUser",
-      signin: "signin",
-      signout: "signout",
+      userSignin: "signin",
+      userSignout: "signout",
     }),
 
     ...mapTasksActions({
       tasksInit: "init",
-    })
+    }),
+
+    async signin () {
+      await this.userSignin();
+      window.location.replace(window.location.pathname)
+    },
+
+    signout () {
+      this.userSignout();
+      window.location.replace("/")
+    },
+
   },
 
   async created () {
