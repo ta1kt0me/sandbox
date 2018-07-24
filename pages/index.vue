@@ -3,8 +3,6 @@
     <h1>
       Index {{ name }}
     </h1>
-    <nuxt-link to="/tasks">Tasks</nuxt-link>
-    <br />
   </div>
 </template>
 

@@ -19,7 +19,6 @@
         @click:append-outer="removeTask(task['.key'])"
       />
     </v-flex>
-    <nuxt-link to="/">Top</nuxt-link>
   </div>
 </template>
 

@@ -24,9 +24,14 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="indigo" dark fixed app>
+    <v-toolbar color="indigo" dark app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>Hello! {{name}}😆</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat to="/">Top</v-btn>
+        <v-btn flat to="/tasks">Tasks</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
@@ -35,10 +40,7 @@
           align-center
         >
           <v-flex text-xs-center>
-            <v-tooltip right>
-            </v-tooltip>
             <div>
-              Hello {{name}}
               <nuxt />
               <li v-if="isSignedIn"><a href="#" @click="signout">Sign out</a></li>
               <li v-else><a href="#" @click="signin">Signin with GitHub</a></li>
@@ -71,8 +73,9 @@ const mapTasksActions = tasksHelpers.mapActions
 
 export default {
   data: () => ({
-    drawer: true,
+    drawer: false,
   }),
+
   computed: {
     ...mapState({
       name: state => state.users.currentUser,
